@@ -1,0 +1,7 @@
+[package]
+name = "bios"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+x86 = { git = "https://github.com/un3th1c4l-qu3lls/x86-rs/"}
