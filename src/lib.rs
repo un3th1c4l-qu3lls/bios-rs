@@ -1,47 +1,5 @@
 #![no_std]
 
-/*
-        Cross check the implementation reference of the gdt in x86::protected::Descriptor to make sure they correspond
-        If not, change the naming convention to not the mode, but the code target...
-
-        GDT Structure
-
-    The GDT at ES:SI must contain 6 descriptors (8 bytes each, total 48 bytes). The BIOS uses these descriptors to define the source and destination memory regions.
-    Descriptor	Offset	Purpose
-    0	+0	Dummy descriptor (must be 0)
-    1	+8	Source region descriptor
-    2	+16	Target region descriptor
-    3	+24	BIOS code segment descriptor (CS)
-    4	+32	BIOS stack segment descriptor (SS)
-    5	+40	Reserved (must be 0)
-
-    Descriptor Format (8 bytes):
-    Byte	Field	Description
-    0–1	Segment Limit	16 bits (max 0xFFFF)
-    2–3	Base Address Low	16 bits (bits 0–15)
-    4	Base Address Mid	8 bits (bits 16–23)
-    5	Access Rights	8 bits (0x93 = data, 0x9B = code)
-    6	Granularity	8 bits (0x00 = 16‑bit, 0x80 = 4KB pages)
-    7	Base Address High	8 bits (bits 24–31)
-*/
-
-/*
-GDT Format
-
-    The GDT at ES:SI must contain 8 descriptors (8 bytes each, total 64 bytes). The BIOS uses these descriptors to set up the protected mode environment.
-    Descriptor	Offset	Purpose
-    0	+0	Dummy (must be zero)
-    1	+8	GDT descriptor (points to the GDT itself)
-    2	+16	IDT descriptor (points to the IDT)
-    3	+24	User's data segment descriptor (DS)
-    4	+32	User's extra segment descriptor (ES)
-    5	+40	User's stack segment descriptor (SS)
-    6	+48	User's code segment descriptor (CS)
-    7	+56	BIOS temporary code segment descriptor (used internally)
-
-    The BIOS will load the GDT and IDT from these descriptors, then jump to the user's code segment (descriptor 6) at offset 0.
-*/
-
 use x86::word::*;
 
 #[inline(always)]
